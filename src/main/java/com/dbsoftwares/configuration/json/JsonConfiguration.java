@@ -27,6 +27,11 @@ public class JsonConfiguration implements IConfiguration {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
         this.object = gson.fromJson(reader, JsonObject.class);
+
+        if (object == null) {
+            object = new JsonObject();
+        }
+
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
             loadValues(entry.getKey(), entry.getValue());
         }

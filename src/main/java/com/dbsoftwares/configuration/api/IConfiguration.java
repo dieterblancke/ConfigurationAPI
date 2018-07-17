@@ -4,8 +4,37 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public interface IConfiguration extends ISection {
+
+    /**
+     * Creates a file from inputstream.
+     * @param input The input stream to be used for file contents.
+     * @param targetFile The file to be created.
+     * @return The created file.
+     */
+    static File createDefaultFile(InputStream input, File targetFile) {
+        if (targetFile.exists()) {
+            throw new RuntimeException("Failed to create an already existing file!");
+        }
+        if (targetFile.isDirectory()) {
+            throw new RuntimeException("Failed to create a file from default!");
+        }
+        if (input == null) {
+            throw new RuntimeException("Cannot create a default file from a null value!");
+        }
+        if (!targetFile.getParentFile().exists()) {
+            targetFile.getParentFile().mkdirs();
+        }
+        try {
+            Files.copy(input, Paths.get(targetFile.toURI()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return targetFile;
+    }
 
     /**
      * Loads in a IConfiguration object from file.
