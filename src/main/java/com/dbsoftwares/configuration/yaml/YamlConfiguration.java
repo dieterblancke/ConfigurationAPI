@@ -737,9 +737,11 @@ public class YamlConfiguration implements IConfiguration {
         if (file == null) {
             return;
         }
+
+        self.clear();
+
         FileInputStream stream = new FileInputStream(file);
         InputStreamReader reader = new InputStreamReader(stream);
-
         LinkedHashMap<String, Object> values = (LinkedHashMap<String, Object>) yaml.get().loadAs(reader, LinkedHashMap.class);
         if (values == null) {
             values = new LinkedHashMap<>();
@@ -750,6 +752,23 @@ public class YamlConfiguration implements IConfiguration {
 
             if (entry.getValue() instanceof Map) {
                 this.self.put(key, new YamlSection((Map<String, Object>) entry.getValue()));
+            } else if (entry.getValue() instanceof List) {
+                List list = (List) entry.getValue();
+                List<ISection> sections = new ArrayList<>();
+
+                for (Object object : list) {
+                    if (object instanceof Map) {
+                        sections.add(new YamlSection((Map<String, Object>) object));
+                    } else {
+                        sections.clear();
+                        this.self.put(key, entry.getValue());
+                        break;
+                    }
+                }
+
+                if (!sections.isEmpty()) {
+                    this.self.put(key, sections);
+                }
             } else {
                 this.self.put(key, entry.getValue());
             }

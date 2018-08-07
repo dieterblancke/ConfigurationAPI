@@ -732,10 +732,15 @@ public class JsonConfiguration implements IConfiguration {
     public void reload() throws IOException {
         try (FileInputStream stream = new FileInputStream(file);
              InputStreamReader reader = new InputStreamReader(stream)) {
+            values.clear();
+
             Gson gson = new Gson();
             this.object = gson.fromJson(reader, JsonObject.class);
 
-            values.clear();
+            if (object == null) {
+                object = new JsonObject();
+            }
+
             for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
                 loadValues(entry.getKey(), entry.getValue());
             }
