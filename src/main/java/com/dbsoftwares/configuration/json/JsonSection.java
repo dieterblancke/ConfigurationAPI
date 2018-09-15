@@ -750,6 +750,12 @@ public class JsonSection implements ISection {
     }
 
     @Override
+    public boolean isSection(String path) {
+        Object object = get(path);
+        return object instanceof ISection;
+    }
+
+    @Override
     public ISection getSection(String section) {
         if (section.isEmpty()) {
             return this;
@@ -784,6 +790,11 @@ public class JsonSection implements ISection {
             }
         }
         return keys;
+    }
+
+    @Override
+    public Map<String, Object> getValues() {
+        return values;
     }
 
     public JsonObject getJsonObject(String path) {

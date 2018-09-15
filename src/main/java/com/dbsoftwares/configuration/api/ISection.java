@@ -3,6 +3,7 @@ package com.dbsoftwares.configuration.api;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ISection {
@@ -476,6 +477,14 @@ public interface ISection {
     List<ISection> getSectionList(String path);
 
     /**
+     * Used to check if the value bound to the given path is a Section.
+     * @param path The path you want to check.
+     * @return True if the value is a Section, false if not.
+     */
+    boolean isSection(String path);
+
+
+    /**
      * Used to get a new IConfiguration representing the section you requested.
      * @param section The section you want to get.
      * @return A new IConfiguration representing the requested Section.
@@ -498,4 +507,9 @@ public interface ISection {
      * @return A set containing all keys of the IConfiguration.
      */
     Set<String> getKeys(String path);
+
+    /**
+     * @return a map with all configuration data
+     */
+    Map<String, Object> getValues();
 }

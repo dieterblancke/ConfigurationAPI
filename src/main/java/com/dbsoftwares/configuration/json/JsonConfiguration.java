@@ -729,6 +729,12 @@ public class JsonConfiguration implements IConfiguration {
     }
 
     @Override
+    public boolean isSection(String path) {
+        Object object = get(path);
+        return object instanceof ISection;
+    }
+
+    @Override
     public void reload() throws IOException {
         try (FileInputStream stream = new FileInputStream(file);
              InputStreamReader reader = new InputStreamReader(stream)) {
@@ -842,6 +848,11 @@ public class JsonConfiguration implements IConfiguration {
             }
         }
         return keys;
+    }
+
+    @Override
+    public Map<String, Object> getValues() {
+        return values;
     }
 
     public JsonObject getJsonObject(String path) {

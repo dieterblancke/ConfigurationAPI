@@ -683,6 +683,12 @@ public class YamlSection implements ISection {
     }
 
     @Override
+    public boolean isSection(String path) {
+        Object object = get(path);
+        return object instanceof ISection;
+    }
+
+    @Override
     public ISection getSection(String path) {
         if (path.isEmpty()) {
             return this;
@@ -710,6 +716,11 @@ public class YamlSection implements ISection {
             }
         }
         return keys;
+    }
+
+    @Override
+    public Map<String, Object> getValues() {
+        return self;
     }
 
     private ISection getSectionFor(String path) {

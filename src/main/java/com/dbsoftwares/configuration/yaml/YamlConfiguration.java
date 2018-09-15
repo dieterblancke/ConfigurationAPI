@@ -732,6 +732,12 @@ public class YamlConfiguration implements IConfiguration {
     }
 
     @Override
+    public boolean isSection(String path) {
+        Object object = get(path);
+        return object instanceof ISection;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public void reload() throws IOException {
         if (file == null) {
@@ -823,6 +829,11 @@ public class YamlConfiguration implements IConfiguration {
             }
         }
         return keys;
+    }
+
+    @Override
+    public Map<String, Object> getValues() {
+        return self;
     }
 
     private ISection getSectionFor(String path) {
