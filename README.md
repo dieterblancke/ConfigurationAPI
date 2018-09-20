@@ -16,7 +16,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <dependency>
     <groupId>com.dbsoftwares.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <scope>compile</scope>
 </dependency>
 ```
