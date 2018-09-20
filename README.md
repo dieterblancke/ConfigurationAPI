@@ -1,6 +1,12 @@
 ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI/badge/icon)](https://ci.dbsoftwares.eu/job/ConfigurationAPI)
 =========
 
+## Features:
+- **Spigot & BungeeCord support**
+- **Multiple storage types**, JSON & YAML
+- **Similar to the Bukkit Configuration API**, no need to learn a complete new API
+- **Support for Section Lists**
+
 ## Usage
 ### Repository
 ```xml
@@ -51,12 +57,6 @@ This is to compile the code into your jar, also the classes are being relocated 
     </plugins>
 </build>
 ```
-
-## Features:
-- **Spigot & BungeeCord support**
-- **Multiple storage types**, JSON & YAML
-- **Similar to the Bukkit Configuration API**, no need to learn a complete new API
-- **Support for Section Lists**
 
 ## API
 You can find [our javadoc here](https://ci.dbsoftwares.eu/job/ConfigurationAPI/javadoc/).
