@@ -1,6 +1,57 @@
 ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI/badge/icon)](https://ci.dbsoftwares.eu/job/ConfigurationAPI)
 =========
 
+## Usage
+### Repository
+```xml
+<repository>
+    <id>dbsoftwares-repo</id>
+    <name>DBSoftwares Repository</name>
+    <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
+</repository>
+```
+
+### Dependency
+```xml
+<dependency>
+    <groupId>com.dbsoftwares.configuration</groupId>
+    <artifactId>ConfigurationAPI</artifactId>
+    <version>1.0.5</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+### Shade Configuration
+This is to compile the code into your jar, also the classes are being relocated into another package.
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <relocations>
+                    <relocation>
+                        <pattern>com.dbsoftwares.configuration</pattern>
+                        <!-- Replace the package below with your package -->
+                        <shadedPattern>example.package.configuration</shadedPattern>
+                    </relocation>
+                </relocations>
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
 ## Features:
 - **Spigot & BungeeCord support**
 - **Multiple storage types**, JSON & YAML
