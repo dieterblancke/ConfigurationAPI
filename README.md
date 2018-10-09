@@ -13,7 +13,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <repository>
     <id>dbsoftwares-repo</id>
     <name>DBSoftwares Repository</name>
-    <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
+    <url>http://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
 </repository>
 ```
 
