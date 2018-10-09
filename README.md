@@ -13,7 +13,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <repository>
     <id>dbsoftwares-repo</id>
     <name>DBSoftwares Repository</name>
-    <url>http://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
+    <url>https://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
 </repository>
 ```
 
@@ -62,7 +62,7 @@ This is to compile the code into your jar, also the classes are being relocated 
 You can find [our javadoc here](https://ci.dbsoftwares.eu/job/ConfigurationAPI/javadoc/).
 
 ### YAML File example
-```
+```java
 // Creating new configuration instance
 IConfiguration yamlExample = IConfiguration.loadYamlConfiguration(new File(getDataFolder(), "yamlExample.yml"));
 ​
@@ -99,7 +99,7 @@ try {
 ```
 
 ### JSON File example
-```
+```java
 // Creating new configuration instance
 IConfiguration jsonExample = IConfiguration.loadJsonConfiguration(new File(getDataFolder(), "jsonExample.json"));
 ​

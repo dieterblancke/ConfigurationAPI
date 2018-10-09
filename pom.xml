@@ -12,7 +12,7 @@
         <repository>
             <id>dbsoftwares</id>
             <name>DBSoftwares Repo</name>
-            <url>http://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
+            <url>https://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
         </repository>
     </distributionManagement>
 
