@@ -61,6 +61,20 @@ This is to compile the code into your jar, also the classes are being relocated 
 ## API
 You can find [our javadoc here](https://ci.dbsoftwares.eu/job/ConfigurationAPI/javadoc/).
 
+### Creating default file
+You can use this if the file doesn't exist, if it does, use the copyDefaults method instead (see below).
+```java
+// Assuming this is in the onEnable method ...
+File configFile = new File(getDataFolder(), "config.yml");
+
+if (!configFile.exists()) {
+    // on BungeeCord, use getResource instead
+    IConfiguration.createDefaultFile(getResourceAsStream("config.yml"), configFile);
+}
+
+IConfiguration config = IConfiguration.loadYamlConfiguration(configFile);
+```
+
 ### YAML File example
 ```java
 // Creating new configuration instance
