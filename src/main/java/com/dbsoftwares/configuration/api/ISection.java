@@ -495,7 +495,7 @@ public interface ISection {
      * Creates an empty section.
      * @param section The path for the new empty section.
      */
-    void createSection(String section);
+    ISection createSection(String section);
 
     /**
      * @return A set containing all keys of the IConfiguration.

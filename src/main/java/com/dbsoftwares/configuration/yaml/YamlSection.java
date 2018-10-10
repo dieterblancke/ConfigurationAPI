@@ -2,43 +2,54 @@ package com.dbsoftwares.configuration.yaml;
 
 import com.dbsoftwares.configuration.api.ISection;
 import com.dbsoftwares.configuration.api.Utils;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
 public class YamlSection implements ISection {
 
-    final LinkedHashMap<String, Object> self = new LinkedHashMap<>();
+    protected final LinkedHashMap<String, Object> self = new LinkedHashMap<>();
+
+    public YamlSection() {
+
+    }
+
+    public YamlSection(final Map<String, Object> values) {
+        loadIntoSections(values, this);
+    }
 
     @SuppressWarnings("unchecked")
-    public YamlSection(Map<String, Object> values) {
-        for (Map.Entry<String, Object> entry : values.entrySet()) {
-            String key = entry.getKey() == null ? "null" : entry.getKey();
+    protected void loadIntoSections(final Map<String, Object> values, final ISection section) {
+        for (final Map.Entry<String, Object> entry : values.entrySet()) {
+            final String key = entry.getKey();
+            final Object value = entry.getValue();
 
-            if (entry.getValue() instanceof Map) {
-                this.self.put(key, new YamlSection((Map<String, Object>) entry.getValue()));
-            } else if (entry.getValue() instanceof List) {
-                List list = (List) entry.getValue();
-                List<ISection> sections = new ArrayList<>();
+            if (value instanceof Map) {
+                loadIntoSections((LinkedHashMap<String, Object>) value, section.createSection(key));
+            } else if (value instanceof List) {
+                final List list = (List) value;
+                final List<ISection> sections = new ArrayList<>();
 
                 for (Object object : list) {
                     if (object instanceof Map) {
                         sections.add(new YamlSection((Map<String, Object>) object));
                     } else {
                         sections.clear();
-                        this.self.put(key, entry.getValue());
+                        section.set(key, value);
                         break;
                     }
                 }
 
                 if (!sections.isEmpty()) {
-                    this.self.put(key, sections);
+                    section.set(key, sections);
                 }
             } else {
-                this.self.put(key, entry.getValue());
+                section.set(key, value);
             }
         }
     }
+
 
     @Override
     public boolean exists(String path) {
@@ -697,8 +708,10 @@ public class YamlSection implements ISection {
     }
 
     @Override
-    public void createSection(String section) {
-        self.put(section, new YamlSection(new LinkedHashMap<>()));
+    public ISection createSection(String key) {
+        ISection section = new YamlSection(new LinkedHashMap<>());
+        self.put(key, section);
+        return section;
     }
 
     @Override

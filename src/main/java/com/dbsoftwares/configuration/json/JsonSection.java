@@ -2,89 +2,51 @@ package com.dbsoftwares.configuration.json;
 
 import com.dbsoftwares.configuration.api.ISection;
 import com.dbsoftwares.configuration.api.Utils;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import java.lang.reflect.Field;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
 public class JsonSection implements ISection {
 
+    protected LinkedHashMap<String, Object> values = new LinkedHashMap<>();
     private String prefix;
-    private JsonObject object;
-    private LinkedHashMap<String, Object> values = new LinkedHashMap<>();
 
-    public JsonSection(String prefix, JsonConfiguration parent) {
-        this.prefix = prefix;
-        this.object = parent.getJsonObject(prefix);
+    public JsonSection() {
 
-        loadValues(null, object);
     }
 
-    public JsonSection(String prefix, JsonSection parent) {
-        this.prefix = prefix;
-        this.object = parent.getJsonObject(prefix);
-
-        loadValues(null, object);
+    public JsonSection(final Map<String, Object> values) {
+        loadIntoSections(values, this);
     }
 
-    public JsonSection(String prefix, JsonObject object) {
-        this.prefix = prefix;
-        this.object = object;
+    @SuppressWarnings("unchecked")
+    protected void loadIntoSections(final Map<String, Object> values, final ISection section) {
+        for (final Map.Entry<String, Object> entry : values.entrySet()) {
+            final String key = entry.getKey();
+            final Object value = entry.getValue();
 
-        loadValues(null, object);
-    }
+            if (value instanceof Map) {
+                loadIntoSections((LinkedHashMap<String, Object>) value, section.createSection(key));
+            } else if (value instanceof List) {
+                final List list = (List) value;
+                final List<ISection> sections = new ArrayList<>();
 
-    private void loadValues(String prefix, JsonElement element) {
-        if (element.isJsonPrimitive()) {
-            JsonPrimitive primitive = element.getAsJsonPrimitive();
-            Object value = getValue(primitive);
-
-            if (value instanceof BigDecimal) {
-                values.put(prefix, primitive.getAsBigDecimal());
-            } else if (value instanceof BigInteger) {
-                values.put(prefix, primitive.getAsBigInteger());
-            } else if (primitive.isBoolean()) {
-                values.put(prefix, primitive.getAsBoolean());
-            } else if (primitive.isNumber()) {
-                values.put(prefix, primitive.getAsNumber());
-            } else if (primitive.isString()) {
-                values.put(prefix, primitive.getAsString());
-            }
-        } else if (element.isJsonArray()) {
-            JsonArray array = element.getAsJsonArray();
-            List<Object> list = new ArrayList<>();
-
-            for (JsonElement e : array) {
-                if (!e.isJsonPrimitive()) {
-                    if (e.isJsonObject()) {
-                        list.add(new JsonSection(prefix, e.getAsJsonObject()));
+                for (Object object : list) {
+                    if (object instanceof Map) {
+                        sections.add(new JsonSection((Map<String, Object>) object));
+                    } else {
+                        sections.clear();
+                        section.set(key, value);
+                        break;
                     }
-                    continue;
                 }
-                JsonPrimitive primitive = e.getAsJsonPrimitive();
-                Object value = getValue(primitive);
-                if (value instanceof BigDecimal) {
-                    list.add(primitive.getAsBigDecimal());
-                } else if (value instanceof BigInteger) {
-                    list.add(primitive.getAsBigInteger());
-                } else if (primitive.isBoolean()) {
-                    list.add(primitive.getAsBoolean());
-                } else if (primitive.isNumber()) {
-                    list.add(primitive.getAsNumber());
-                } else if (primitive.isString()) {
-                    list.add(primitive.getAsString());
-                }
-            }
 
-            values.put(prefix, list);
-        } else if (element.isJsonObject()) {
-            JsonObject obj = element.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
-                loadValues((prefix != null ? prefix + "." : "") + entry.getKey(), entry.getValue());
+                if (!sections.isEmpty()) {
+                    section.set(key, sections);
+                }
+            } else {
+                section.set(key, value);
             }
         }
     }
@@ -99,7 +61,8 @@ public class JsonSection implements ISection {
         values.put(path, value);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public <T> T get(String path, T def) {
         return (T) values.getOrDefault(path, def);
     }
@@ -125,7 +88,7 @@ public class JsonSection implements ISection {
         String result = getString(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -146,7 +109,7 @@ public class JsonSection implements ISection {
         Boolean result = getBoolean(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -168,7 +131,7 @@ public class JsonSection implements ISection {
         Integer result = getInteger(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -189,7 +152,7 @@ public class JsonSection implements ISection {
         Number result = getNumber(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -210,7 +173,7 @@ public class JsonSection implements ISection {
         Double result = getDouble(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -231,7 +194,7 @@ public class JsonSection implements ISection {
         Long result = getLong(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -252,7 +215,7 @@ public class JsonSection implements ISection {
         Float result = getFloat(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -273,7 +236,7 @@ public class JsonSection implements ISection {
         Byte result = getByte(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -294,7 +257,7 @@ public class JsonSection implements ISection {
         Short result = getShort(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -315,7 +278,7 @@ public class JsonSection implements ISection {
         BigInteger result = getBigInteger(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -336,7 +299,7 @@ public class JsonSection implements ISection {
         BigDecimal result = getBigDecimal(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
         return result == null ? def : result;
     }
@@ -357,7 +320,7 @@ public class JsonSection implements ISection {
         List result = getList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -382,7 +345,7 @@ public class JsonSection implements ISection {
         List<String> result = getStringList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -411,7 +374,7 @@ public class JsonSection implements ISection {
         List<Integer> result = getIntegerList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -440,7 +403,7 @@ public class JsonSection implements ISection {
         List<Double> result = getDoubleList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -469,7 +432,7 @@ public class JsonSection implements ISection {
         List<Boolean> result = getBooleanList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -498,7 +461,7 @@ public class JsonSection implements ISection {
         List<Long> result = getLongList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -527,7 +490,7 @@ public class JsonSection implements ISection {
         List<Byte> result = getByteList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -556,7 +519,7 @@ public class JsonSection implements ISection {
         List<Short> result = getShortList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -585,7 +548,7 @@ public class JsonSection implements ISection {
         List<Float> result = getFloatList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -624,7 +587,7 @@ public class JsonSection implements ISection {
         List<Number> result = getNumberList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -651,7 +614,7 @@ public class JsonSection implements ISection {
         List<BigInteger> result = getBigIntegerList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -678,7 +641,7 @@ public class JsonSection implements ISection {
         List<BigDecimal> result = getBigDecimalList(path);
 
         if (result == null) {
-            update(object, path, def, false);
+            update(path, def, false);
         }
 
         return result == null ? def : result;
@@ -700,52 +663,11 @@ public class JsonSection implements ISection {
         return sections;
     }
 
-    private void update(JsonObject object, String path, Object value, Boolean overwrite) {
-        Iterator<String> it = Arrays.asList(path.split("\\.")).iterator();
-
-        while (it.hasNext()) {
-            String part = it.next();
-
-            if (it.hasNext()) {
-                if (!object.has(part)) {
-                    object.add(part, new JsonObject());
-                }
-                object = object.getAsJsonObject(part);
-            } else {
-                if (!overwrite && object.has(part)) {
-                    continue;
-                }
-                if (value instanceof Character) {
-                    object.addProperty(part, (Character) value);
-                } else if (value instanceof Number) {
-                    object.addProperty(part, (Number) value);
-                } else if (value instanceof String) {
-                    object.addProperty(part, (String) value);
-                } else if (value instanceof Boolean) {
-                    object.addProperty(part, (Boolean) value);
-                } else if (value instanceof List) {
-                    JsonArray array = new JsonArray();
-
-                    for (Object obj : (List) value) {
-                        if (obj instanceof Character) {
-                            array.add((Character) obj);
-                        } else if (obj instanceof Number) {
-                            array.add((Number) obj);
-                        } else if (obj instanceof String) {
-                            array.add((String) obj);
-                        } else if (obj instanceof Boolean) {
-                            array.add((Boolean) obj);
-                        } else {
-                            array.add(obj.toString());
-                        }
-                    }
-
-                    object.add(part, array);
-                } else {
-                    // Attempt String storage in case of other type.
-                    object.addProperty(part, value.toString());
-                }
-            }
+    private void update(String path, Object value, boolean overwrite) {
+        if (!values.containsKey(path)) {
+            values.put(path, value);
+        } else if (values.containsKey(path) && overwrite) {
+            values.put(path, value);
         }
     }
 
@@ -761,18 +683,14 @@ public class JsonSection implements ISection {
             return this;
         }
 
-        return new JsonSection(section, this);
+        return this.get(section, new JsonSection(new LinkedHashMap<>()));
     }
 
     @Override
-    public void createSection(String section) {
-        JsonObject object = this.object;
-        for (String part : section.split("\\.")) {
-            if (!object.has(part)) {
-                object.add(part, new JsonObject());
-            }
-            object = object.getAsJsonObject(part);
-        }
+    public ISection createSection(String key) {
+        ISection section = new JsonSection(new LinkedHashMap<>());
+        values.put(key, section);
+        return section;
     }
 
     @Override
@@ -795,31 +713,5 @@ public class JsonSection implements ISection {
     @Override
     public Map<String, Object> getValues() {
         return values;
-    }
-
-    public JsonObject getJsonObject(String path) {
-        JsonObject object = this.object;
-        for (String part : path.split("\\.")) {
-            if (!object.has(part) || !object.get(part).isJsonObject()) {
-                return null;
-            }
-            object = object.getAsJsonObject(part);
-        }
-        return object;
-    }
-
-    private Object getValue(JsonPrimitive primitive) {
-        Field field = Utils.getField(primitive.getClass(), "value");
-        field.setAccessible(true);
-        try {
-            return field.get(primitive);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String getPath(String path) {
-        return prefix + "." + path;
     }
 }

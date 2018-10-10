@@ -8,6 +8,14 @@ import java.math.BigInteger;
 
 public class Utils {
 
+    public static boolean isBukkit() {
+        return isLoaded("org.bukkit.Bukkit");
+    }
+
+    public boolean isBungee() {
+        return isLoaded("net.md_5.bungee.api.ProxyServer");
+    }
+
     public static Class<?> getClass(String name) {
         try {
             return Class.forName(name);

@@ -6,6 +6,9 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 - **Multiple storage types**, JSON & YAML
 - **Similar to the Bukkit Configuration API**, no need to learn a complete new API
 - **Support for Section Lists**
+- **Serialization support**
+    - **Bukkit**: [See Bukkit API](https://bukkit.gamepedia.com/Configuration_API_Reference#Serializing_and_Deserializing_Objects), although the API explained below also works
+    - **BungeeCord**: see below
 
 ## Usage
 ### Repository
@@ -22,7 +25,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <dependency>
     <groupId>com.dbsoftwares.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>1.0.6</version>
+    <version>1.1.1</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -146,5 +149,119 @@ try {
 } catch (IOException e) {
     System.out.println("Could not reload configuration: ");
     e.printStackTrace();
+}
+```
+
+### Object Serialization
+In order to store objects other then the default supported ones, you will have to use the Object Serialization API.
+For this you will need to implement the ConfigurationSerializable into your classes, 
+aswell as having a static "deserialize" method.
+
+You can find a simple example of how to use this API below:
+
+#### Registering
+```java
+ConfigurationSerialization.registerClass(ServerInfo.class);
+ConfigurationSerialization.registerClass(PingData.class);
+```
+
+#### ServerInfo.class:
+```java
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Objects;
+
+import com.dbsoftwares.configuration.serialization.ConfigurationSerializable;
+import com.dbsoftwares.configuration.serialization.SerializableAs;
+
+@SerializableAs("ServerInfo")
+public class ServerInfo implements ConfigurationSerializable {
+
+    private String name;
+    private String ip;
+    private int count;
+    private int max;
+    private PingData lastPing;
+
+    public ServerInfo(String name, String ip, int count, int max) {
+        this.name = name;
+        this.ip = ip;
+        this.count = count;
+        this.max = max;
+    }
+
+    public static ServerInfo deserialize(Map<String, Object> map) {
+        String name = (String) map.get("name");
+        String ip = (String) map.get("ip");
+        int count = ((Number) map.get("count")).intValue();
+        int max = ((Number) map.get("max")).intValue();
+
+        ServerInfo info = new ServerInfo(name, ip, count, max);
+
+        if (map.containsKey("lastPing")) {
+            PingData ping = (PingData) map.get("lastPing");
+            info.setLastPing(ping);
+        }
+
+        return info;
+    }
+
+    public void ping() {
+        // TODO: create ping request
+    }
+
+    public void setLastPing(PingData lastPing) {
+        this.lastPing = lastPing;
+    }
+
+    public Map<String, Object> serialize() {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("name", name);
+        result.put("ip", ip);
+        result.put("count", count);
+        result.put("max", max);
+        result.put("lastPing", lastPing);
+
+        return result;
+    }
+}
+```
+
+#### PingData.class
+```java
+import com.dbsoftwares.configuration.serialization.ConfigurationSerializable;
+import com.dbsoftwares.configuration.serialization.SerializableAs;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+@SerializableAs("PingData")
+public class PingData implements ConfigurationSerializable {
+
+    private boolean online;
+    private String motd;
+
+    public PingData(boolean online, String motd) {
+        this.online = online;
+        this.motd = motd;
+    }
+
+    public Map<String, Object> serialize() {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("online", online);
+        result.put("motd", motd);
+
+        return result;
+    }
+
+    public static PingData deserialize(Map<String, Object> map) {
+        boolean online = (Boolean) map.get("online");
+        String motd = (String) map.get("motd");
+
+        return new PingData(online, motd);
+    }
 }
 ```
