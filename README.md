@@ -158,11 +158,24 @@ For this you will need to implement the ConfigurationSerializable into your clas
 aswell as having a static "deserialize" method.
 
 You can find a simple example of how to use this API below:
-
 #### Registering
 ```java
 ConfigurationSerialization.registerClass(ServerInfo.class);
 ConfigurationSerialization.registerClass(PingData.class);
+```
+
+#### Usage
+You should only do this after registration
+```java
+IConfiguration configuration; // TODO: initialize variable
+
+// set in configuration
+configuration.set("info", new ServerInfo("test", "127.0.0.1:25665", 0, 20));
+
+// get from configuration (casting is REQUIRED)
+ServerInfo info = configuration.get("info");
+
+// do stuff with it
 ```
 
 #### ServerInfo.class:
