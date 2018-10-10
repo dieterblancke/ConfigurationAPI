@@ -1,7 +1,9 @@
 package com.dbsoftwares.configuration.yaml;
 
 import com.dbsoftwares.configuration.api.ISection;
+import com.dbsoftwares.configuration.api.ISpigotSection;
 import com.dbsoftwares.configuration.api.Utils;
+import com.dbsoftwares.configuration.yaml.bukkit.SpigotSection;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -10,12 +12,16 @@ import java.util.*;
 public class YamlSection implements ISection {
 
     protected final LinkedHashMap<String, Object> self = new LinkedHashMap<>();
+    private SpigotSection spigot;
 
     public YamlSection() {
-
+        if (Utils.isBukkit()) {
+            spigot = new SpigotSection(this);
+        }
     }
 
     public YamlSection(final Map<String, Object> values) {
+        this();
         loadIntoSections(values, this);
     }
 
@@ -685,7 +691,7 @@ public class YamlSection implements ISection {
         return sections;
     }
 
-    private void update(String path, Object value, boolean overwrite) {
+    public void update(String path, Object value, boolean overwrite) {
         if (!self.containsKey(path)) {
             self.put(path, value);
         } else if (self.containsKey(path) && overwrite) {
@@ -734,6 +740,11 @@ public class YamlSection implements ISection {
     @Override
     public Map<String, Object> getValues() {
         return self;
+    }
+
+    @Override
+    public ISpigotSection spigot() {
+        return spigot;
     }
 
     private ISection getSectionFor(String path) {

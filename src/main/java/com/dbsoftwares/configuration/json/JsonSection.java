@@ -1,7 +1,9 @@
 package com.dbsoftwares.configuration.json;
 
 import com.dbsoftwares.configuration.api.ISection;
+import com.dbsoftwares.configuration.api.ISpigotSection;
 import com.dbsoftwares.configuration.api.Utils;
+import com.dbsoftwares.configuration.yaml.bukkit.SpigotSection;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,12 +13,16 @@ public class JsonSection implements ISection {
 
     protected LinkedHashMap<String, Object> values = new LinkedHashMap<>();
     private String prefix;
+    private SpigotSection spigot;
 
     public JsonSection() {
-
+        if (Utils.isBukkit()) {
+            spigot = new SpigotSection(this);
+        }
     }
 
     public JsonSection(final Map<String, Object> values) {
+        this();
         loadIntoSections(values, this);
     }
 
@@ -663,7 +669,7 @@ public class JsonSection implements ISection {
         return sections;
     }
 
-    private void update(String path, Object value, boolean overwrite) {
+    public void update(String path, Object value, boolean overwrite) {
         if (!values.containsKey(path)) {
             values.put(path, value);
         } else if (values.containsKey(path) && overwrite) {
@@ -713,5 +719,10 @@ public class JsonSection implements ISection {
     @Override
     public Map<String, Object> getValues() {
         return values;
+    }
+
+    @Override
+    public ISpigotSection spigot() {
+        return spigot;
     }
 }
