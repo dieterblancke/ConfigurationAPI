@@ -11,31 +11,37 @@
 
     <distributionManagement>
         <repository>
-            <id>dbsoftwares</id>
-            <name>DBSoftwares Repo</name>
-            <url>https://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
+            <id>packagecloud-travis</id>
+            <url>packagecloud+https://packagecloud.io/didjee2/DBSoftwares</url>
         </repository>
+        <snapshotRepository>
+            <id>packagecloud-travis</id>
+            <url>packagecloud+https://packagecloud.io/didjee2/DBSoftwares</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
-            <id>dbsoftwares</id>
-            <name>DBSoftwares Repo</name>
-            <url>https://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.13.1</version>
+            <artifactId>spigot-api</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
-            <artifactId>bungeecord</artifactId>
-            <version>1.13.1-SNAPSHOT</version>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.13-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
