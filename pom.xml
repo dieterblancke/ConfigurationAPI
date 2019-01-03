@@ -11,13 +11,9 @@
 
     <distributionManagement>
         <repository>
-            <id>packagecloud-travis</id>
-            <url>packagecloud+https://packagecloud.io/didjee2/DBSoftwares</url>
+            <id>dbsoftwares</id>
+            <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
         </repository>
-        <snapshotRepository>
-            <id>packagecloud-travis</id>
-            <url>packagecloud+https://packagecloud.io/didjee2/DBSoftwares</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <repositories>
