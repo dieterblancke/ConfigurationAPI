@@ -59,7 +59,15 @@ public class YamlSection implements ISection {
 
     @Override
     public boolean exists(String path) {
-        return self.containsKey(path);
+        final ISection section = getSectionFor(path);
+        final boolean exists;
+
+        if (section == this) {
+            exists = this.self.containsKey(path);
+        } else {
+            exists = section.exists(getChild(path));
+        }
+        return exists;
     }
 
     @Override
@@ -675,14 +683,14 @@ public class YamlSection implements ISection {
     }
 
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
     public List<ISection> getSectionList(String path) {
-        List list = getList(path);
+        final List list = getList(path);
 
         if (list == null) {
             return null;
         }
-        List<ISection> sections = new ArrayList<>();
+        final List<ISection> sections = new ArrayList<>();
         for (Object object : list) {
             if (object instanceof ISection) {
                 sections.add((ISection) object);

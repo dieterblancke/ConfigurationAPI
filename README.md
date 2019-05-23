@@ -1,5 +1,8 @@
-ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI/badge/icon)](https://ci.dbsoftwares.eu/job/ConfigurationAPI)
+ConfigurationAPI
 =========
+
+**NOTE:** JsonConfiguration is most likely not working correctly for getting / checking exists
+ for section paths (aka test.example.key would likely not work correctly).
 
 ## Features:
 - **Spigot & BungeeCord support**
@@ -16,7 +19,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <repository>
     <id>dbsoftwares-repo</id>
     <name>DBSoftwares Repository</name>
-    <url>https://nexus.dbsoftwares.eu/repository/dbsoftwares/</url>
+    <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
 </repository>
 ```
 
@@ -25,7 +28,7 @@ ConfigurationAPI [![Build Status](https://ci.dbsoftwares.eu/job/ConfigurationAPI
 <dependency>
     <groupId>com.dbsoftwares.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -62,8 +65,6 @@ This is to compile the code into your jar, also the classes are being relocated 
 ```
 
 ## API
-You can find [our javadoc here](https://ci.dbsoftwares.eu/job/ConfigurationAPI/javadoc/).
-
 ### Creating default file
 You can use this if the file doesn't exist, if it does, use the copyDefaults method instead (see below).
 ```java
