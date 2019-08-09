@@ -60,15 +60,7 @@ public class YamlSection implements ISection {
 
     @Override
     public boolean exists(String path) {
-        final ISection section = getSectionFor(path);
-        final boolean exists;
-
-        if (section == this) {
-            exists = this.self.containsKey(path);
-        } else {
-            exists = section.exists(getChild(path));
-        }
-        return exists;
+        return this.get(path) != null;
     }
 
     @Override
