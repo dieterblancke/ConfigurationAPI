@@ -4,6 +4,7 @@ import com.dbsoftwares.configuration.api.ISection;
 import com.dbsoftwares.configuration.api.ISpigotSection;
 import com.dbsoftwares.configuration.api.Utils;
 import com.dbsoftwares.configuration.yaml.bukkit.SpigotSection;
+import com.google.common.collect.Sets;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -730,7 +731,32 @@ public class YamlSection implements ISection {
 
     @Override
     public Set<String> getKeys() {
-        return self.keySet();
+        return getKeys(false);
+    }
+
+    @Override
+    public Set<String> getKeys(boolean deep) {
+        if (deep) {
+            final Set<String> keys = Sets.newHashSet();
+
+            this.loadSectionKeys("", keys, this, deep);
+
+            return keys;
+        } else {
+            return self.keySet();
+        }
+    }
+
+    private void loadSectionKeys(final String parentKey, final Set<String> set, final ISection section, final boolean deep) {
+        for (Map.Entry<String, Object> entry : section.getValues().entrySet()) {
+            final String key = (parentKey.isEmpty() ? "" : parentKey + ".") + entry.getKey();
+
+            if (entry.getValue() instanceof ISection) {
+                loadSectionKeys(key, set, (ISection) entry.getValue(), deep);
+            } else {
+                set.add(key);
+            }
+        }
     }
 
     @Override

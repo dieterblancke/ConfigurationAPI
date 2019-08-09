@@ -568,6 +568,11 @@ public interface ISection {
     Set<String> getKeys();
 
     /**
+     * @return A set containing all keys of the IConfiguration.
+     */
+    Set<String> getKeys(boolean deep);
+
+    /**
      * @param path The path from which you want to retrieve the keys.
      * @return A set containing all keys of the IConfiguration.
      */

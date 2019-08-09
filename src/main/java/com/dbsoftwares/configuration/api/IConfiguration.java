@@ -11,7 +11,8 @@ public interface IConfiguration extends ISection {
 
     /**
      * Creates a file from inputstream.
-     * @param input The input stream to be used for file contents.
+     *
+     * @param input      The input stream to be used for file contents.
      * @param targetFile The file to be created.
      * @return The created file.
      */
@@ -38,6 +39,7 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from file.
+     *
      * @param file The file that has to be read.
      * @return A new IConfiguration instance for the given file.
      */
@@ -47,6 +49,7 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from InputStream.
+     *
      * @param input The stream that has to be read.
      * @return A new IConfiguration instance for the given stream.
      */
@@ -56,6 +59,7 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from file.
+     *
      * @param file The file that has to be read.
      * @return A new IConfiguration instance for the given file.
      */
@@ -65,6 +69,7 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from InputStream.
+     *
      * @param input The stream that has to be read.
      * @return A new IConfiguration instance for the given stream.
      */
@@ -74,9 +79,10 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from File.
+     *
      * @param clazz Whether any class implementing IConfiguration with a constructor from File.
-     * @param file The file you want to load.
-     * @param <T> The class implementing IConfiguration you want to get.
+     * @param file  The file you want to load.
+     * @param <T>   The class implementing IConfiguration you want to get.
      * @return A new instance of T implementing IConfiguration, null if an error occured.
      */
     @SuppressWarnings("unchecked")
@@ -92,9 +98,10 @@ public interface IConfiguration extends ISection {
 
     /**
      * Loads in a IConfiguration object from InputStream.
-     * @param clazz Whether any class implementing IConfiguration with a constructor from InputStream.
+     *
+     * @param clazz  Whether any class implementing IConfiguration with a constructor from InputStream.
      * @param stream The InputStream you want to load.
-     * @param <T> The class implementing IConfiguration you want to get.
+     * @param <T>    The class implementing IConfiguration you want to get.
      * @return A new instance of T implementing IConfiguration, null if an error occured.
      */
     @SuppressWarnings("unchecked")
@@ -115,7 +122,6 @@ public interface IConfiguration extends ISection {
      * @param file The file you want to load.
      * @return A new IConfiguration instance, null if an error occured.
      */
-    @SuppressWarnings("unchecked")
     static IConfiguration loadConfiguration(FileStorageType type, File file) {
         try {
             Constructor<?> constructor = Utils.getConstructor(getConfigurationClass(type), File.class);
@@ -133,7 +139,6 @@ public interface IConfiguration extends ISection {
      * @param stream The InputStream you want to load.
      * @return A new IConfiguration instance, null if an error occured.
      */
-    @SuppressWarnings("unchecked")
     static IConfiguration loadConfiguration(FileStorageType type, InputStream stream) {
         try {
             Constructor<?> constructor = Utils.getConstructor(getConfigurationClass(type), InputStream.class);
@@ -162,6 +167,7 @@ public interface IConfiguration extends ISection {
 
     /**
      * Copies keys and values from the given IConfiguration instance IF NOT found in the instance.
+     *
      * @param configuration The configuration you want to load defaults from.
      * @throws IOException If there is an error saving the file.
      */
@@ -169,12 +175,14 @@ public interface IConfiguration extends ISection {
 
     /**
      * Reloads the IConfiguration from File.
+     *
      * @throws IOException Being thrown if the File is not found. For example if you reload a IConfiguration built with a stream.
      */
     void reload() throws IOException;
 
     /**
      * Saves the IConfiguration to the File.
+     *
      * @throws IOException Being thrown if the File is not found. For example if you try to save a IConfiguration built with a stream.
      */
     void save() throws IOException;

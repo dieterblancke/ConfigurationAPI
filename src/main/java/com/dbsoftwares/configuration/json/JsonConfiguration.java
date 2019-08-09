@@ -66,7 +66,7 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
             file.createNewFile();
         }
         boolean changed = false;
-        for (String key : config.getKeys()) {
+        for (String key : config.getKeys(true)) {
             if (!exists(key)) {
                 set(key, config.get(key));
                 changed = true;

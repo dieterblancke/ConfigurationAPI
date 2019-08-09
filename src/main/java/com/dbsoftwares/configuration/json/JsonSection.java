@@ -701,7 +701,17 @@ public class JsonSection implements ISection {
 
     @Override
     public Set<String> getKeys() {
-        return values.keySet();
+        return getKeys(false);
+    }
+
+    @Override
+    public Set<String> getKeys(boolean deep) {
+        if (deep) {
+            // todo: change
+            return values.keySet();
+        } else {
+            return values.keySet();
+        }
     }
 
     @Override

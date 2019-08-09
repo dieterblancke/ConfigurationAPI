@@ -52,7 +52,7 @@ public class YamlConfiguration extends YamlSection implements IConfiguration {
             file.createNewFile();
         }
         boolean changed = false;
-        for (String key : configuration.getKeys()) {
+        for (String key : configuration.getKeys(true)) {
             if (!exists(key)) {
                 Object value = configuration.get(key);
 
