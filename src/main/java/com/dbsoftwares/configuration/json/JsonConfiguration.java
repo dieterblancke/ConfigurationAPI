@@ -7,8 +7,10 @@ import com.dbsoftwares.configuration.json.bukkit.BukkitJsonConfigurationSerializ
 import com.dbsoftwares.configuration.serialization.ConfigurationSerializable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,7 +24,6 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
         this.file = file;
     }
 
-    @SuppressWarnings("unchecked")
     public JsonConfiguration(final InputStream input) throws IOException {
         if (input == null) {
             return;
@@ -30,7 +31,10 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
 
         try (final InputStream inputStream = input;
              final InputStreamReader reader = new InputStreamReader(inputStream)) {
-            Map<String, Object> values = gson.fromJson(reader, Map.class);
+            Map<String, Object> values = gson.fromJson(
+                    reader, new TypeToken<HashMap<String, Object>>() {
+                    }.getType()
+            );
 
             if (values == null) {
                 values = new LinkedHashMap<>();
@@ -41,10 +45,12 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
     }
 
     private static Gson createGson() {
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping()
-                .setExclusionStrategies(new JsonExclusionStrategy()); // usually fields of superclasses are not what we want
-
-        builder.registerTypeHierarchyAdapter(ConfigurationSerializable.class, new JsonConfigurationSerializer())
+        final GsonBuilder builder = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .setExclusionStrategies(new JsonExclusionStrategy()) // usually fields of superclasses are not what we want
+                .registerTypeHierarchyAdapter(JsonSection.class, new JsonSectionSerializer())
+                .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new JsonConfigurationSerializer())
                 .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new JsonConfigurationDeserializer());
 
         if (Utils.isBukkit()) {
@@ -78,7 +84,6 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void reload() throws IOException {
         if (file == null) {
             return;
@@ -87,7 +92,10 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
 
         try (final FileInputStream input = new FileInputStream(file);
              final InputStreamReader reader = new InputStreamReader(input)) {
-            Map<String, Object> values = gson.fromJson(reader, Map.class);
+            Map<String, Object> values = gson.fromJson(
+                    reader, new TypeToken<HashMap<String, Object>>() {
+                    }.getType()
+            );
 
             if (values == null) {
                 values = new LinkedHashMap<>();

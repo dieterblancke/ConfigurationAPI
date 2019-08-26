@@ -7,8 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,49 +18,29 @@ public class JsonUtils {
         final Map<String, Object> values = new LinkedHashMap<>();
 
         if (element.isJsonPrimitive()) {
-            JsonPrimitive primitive = element.getAsJsonPrimitive();
-            Object value = getValue(primitive);
+            final JsonPrimitive primitive = element.getAsJsonPrimitive();
+            final Object value = getValue(primitive);
 
-            if (value instanceof BigDecimal) {
-                values.put(prefix, primitive.getAsBigDecimal());
-            } else if (value instanceof BigInteger) {
-                values.put(prefix, primitive.getAsBigInteger());
-            } else if (primitive.isBoolean()) {
-                values.put(prefix, primitive.getAsBoolean());
-            } else if (primitive.isNumber()) {
-                values.put(prefix, primitive.getAsNumber());
-            } else if (primitive.isString()) {
-                values.put(prefix, primitive.getAsString());
-            }
+            values.put(prefix, value);
         } else if (element.isJsonArray()) {
-            JsonArray array = element.getAsJsonArray();
-            List<Object> list = new ArrayList<>();
+            final JsonArray array = element.getAsJsonArray();
+            final List<Object> list = new ArrayList<>();
 
             for (JsonElement e : array) {
-                if (!e.isJsonPrimitive()) {
-                    if (e.isJsonObject()) {
-                        list.add(readValues(prefix, e.getAsJsonObject()));
-                    }
-                    continue;
-                }
-                JsonPrimitive primitive = e.getAsJsonPrimitive();
-                Object value = getValue(primitive);
-                if (value instanceof BigDecimal) {
-                    list.add(primitive.getAsBigDecimal());
-                } else if (value instanceof BigInteger) {
-                    list.add(primitive.getAsBigInteger());
-                } else if (primitive.isBoolean()) {
-                    list.add(primitive.getAsBoolean());
-                } else if (primitive.isNumber()) {
-                    list.add(primitive.getAsNumber());
-                } else if (primitive.isString()) {
-                    list.add(primitive.getAsString());
+                if (e.isJsonPrimitive()) {
+                    final Object value = getValue(e.getAsJsonPrimitive());
+
+                    list.add(value);
+                } else if (e.isJsonObject()) {
+                    list.add(readValues(prefix, e.getAsJsonObject()));
+                } else if (e.isJsonArray()) {
+                    list.add(readValues(prefix, e.getAsJsonArray()));
                 }
             }
 
             values.put(prefix, list);
         } else if (element.isJsonObject()) {
-            JsonObject obj = element.getAsJsonObject();
+            final JsonObject obj = element.getAsJsonObject();
 
             for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
                 values.put(prefix, readValues(entry.getKey(), entry.getValue()));

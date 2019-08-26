@@ -1,6 +1,5 @@
 package com.dbsoftwares.configuration.json.bukkit;
 
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;

@@ -4,6 +4,7 @@ import com.dbsoftwares.configuration.api.ISection;
 import com.dbsoftwares.configuration.api.ISpigotSection;
 import com.dbsoftwares.configuration.api.Utils;
 import com.dbsoftwares.configuration.yaml.bukkit.SpigotSection;
+import com.google.common.collect.Sets;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,7 +14,7 @@ public class JsonSection implements ISection {
 
     protected LinkedHashMap<String, Object> values = new LinkedHashMap<>();
     private String prefix;
-    private SpigotSection spigot;
+    private transient SpigotSection spigot;
 
     public JsonSection() {
         if (Utils.isBukkit()) {
@@ -28,12 +29,12 @@ public class JsonSection implements ISection {
 
     @SuppressWarnings("unchecked")
     protected void loadIntoSections(final Map<String, Object> values, final ISection section) {
-        for (final Map.Entry<String, Object> entry : values.entrySet()) {
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
 
             if (value instanceof Map) {
-                loadIntoSections((LinkedHashMap<String, Object>) value, section.createSection(key));
+                loadIntoSections((Map<String, Object>) value, section.createSection(key));
             } else if (value instanceof List) {
                 final List list = (List) value;
                 final List<ISection> sections = new ArrayList<>();
@@ -59,18 +60,39 @@ public class JsonSection implements ISection {
 
     @Override
     public boolean exists(String path) {
-        return values.containsKey(path);
+        return this.get(path) != null;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void set(String path, Object value) {
-        values.put(path, value);
+        if (value instanceof Map) {
+            value = new JsonSection((Map<String, Object>) value);
+        }
+
+        final ISection section = this.getSectionFor(path);
+        if (section == this) {
+            if (value == null) {
+                this.values.remove(path);
+            } else {
+                this.values.put(path, value);
+            }
+        } else {
+            section.set(getChild(path), value);
+        }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(String path, T def) {
-        return (T) values.getOrDefault(path, def);
+        ISection section = getSectionFor(path);
+        Object value;
+        if (section == this) {
+            value = this.values.get(path);
+        } else {
+            value = section.get(getChild(path));
+        }
+        return value != null ? (T) value : def;
     }
 
     @Override
@@ -86,7 +108,7 @@ public class JsonSection implements ISection {
 
     @Override
     public String getString(String path) {
-        return (String) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -107,7 +129,7 @@ public class JsonSection implements ISection {
 
     @Override
     public Boolean getBoolean(String path) {
-        return (Boolean) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -150,7 +172,7 @@ public class JsonSection implements ISection {
 
     @Override
     public Number getNumber(String path) {
-        return (Number) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -276,7 +298,7 @@ public class JsonSection implements ISection {
 
     @Override
     public BigInteger getBigInteger(String path) {
-        return (BigInteger) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -297,7 +319,7 @@ public class JsonSection implements ISection {
 
     @Override
     public BigDecimal getBigDecimal(String path) {
-        return (BigDecimal) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -318,7 +340,7 @@ public class JsonSection implements ISection {
 
     @Override
     public List getList(String path) {
-        return (List) values.getOrDefault(path, null);
+        return get(path);
     }
 
     @Override
@@ -695,7 +717,9 @@ public class JsonSection implements ISection {
     @Override
     public ISection createSection(String key) {
         ISection section = new JsonSection(new LinkedHashMap<>());
-        values.put(key, section);
+
+        set(key, section);
+
         return section;
     }
 
@@ -707,16 +731,31 @@ public class JsonSection implements ISection {
     @Override
     public Set<String> getKeys(boolean deep) {
         if (deep) {
-            // todo: change
-            return values.keySet();
+            final Set<String> keys = Sets.newHashSet();
+
+            this.loadSectionKeys("", keys, this, deep);
+
+            return keys;
         } else {
             return values.keySet();
         }
     }
 
+    private void loadSectionKeys(final String parentKey, final Set<String> set, final ISection section, final boolean deep) {
+        for (Map.Entry<String, Object> entry : section.getValues().entrySet()) {
+            final String key = (parentKey.isEmpty() ? "" : parentKey + ".") + entry.getKey();
+
+            if (entry.getValue() instanceof ISection) {
+                loadSectionKeys(key, set, (ISection) entry.getValue(), deep);
+            } else {
+                set.add(key);
+            }
+        }
+    }
+
     @Override
     public Set<String> getKeys(String path) {
-        Set<String> keys = new HashSet<>();
+        final Set<String> keys = new HashSet<>();
 
         for (String key : getKeys()) {
             if (key.startsWith(path)) {
@@ -734,5 +773,31 @@ public class JsonSection implements ISection {
     @Override
     public ISpigotSection spigot() {
         return spigot;
+    }
+
+    private ISection getSectionFor(String path) {
+        int index = path.indexOf(46);
+        if (index == -1) {
+            return this;
+        } else {
+            String root = path.substring(0, index);
+            Object section = this.values.get(root);
+            if (section == null) {
+                section = new JsonSection(new LinkedHashMap<>());
+                this.values.put(root, section);
+            }
+
+            return (JsonSection) section;
+        }
+    }
+
+    private String getChild(String path) {
+        int index = path.indexOf(46);
+        return index == -1 ? path : path.substring(index + 1);
+    }
+
+    @Override
+    public String toString() {
+        return values.toString();
     }
 }

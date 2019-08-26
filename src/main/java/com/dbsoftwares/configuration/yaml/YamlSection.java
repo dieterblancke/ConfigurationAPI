@@ -28,7 +28,7 @@ public class YamlSection implements ISection {
 
     @SuppressWarnings("unchecked")
     protected void loadIntoSections(final Map<String, Object> values, final ISection section) {
-        for (final Map.Entry<String, Object> entry : values.entrySet()) {
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
 
@@ -56,7 +56,6 @@ public class YamlSection implements ISection {
             }
         }
     }
-
 
     @Override
     public boolean exists(String path) {
@@ -717,7 +716,7 @@ public class YamlSection implements ISection {
     @Override
     public ISection createSection(String key) {
         ISection section = new YamlSection(new LinkedHashMap<>());
-        self.put(key, section);
+        set(key, section);
         return section;
     }
 
