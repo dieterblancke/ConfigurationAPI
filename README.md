@@ -1,9 +1,6 @@
 ConfigurationAPI
 =========
 
-**NOTE:** JsonConfiguration is most likely not working correctly for getting / checking exists
- for section paths (aka test.example.key would likely not work correctly).
-
 ## Features:
 - **Spigot & BungeeCord support**
 - **Multiple storage types**, JSON & YAML
@@ -28,7 +25,7 @@ ConfigurationAPI
 <dependency>
     <groupId>com.dbsoftwares.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>1.1.2</version>
+    <version>1.3.1</version>
     <scope>compile</scope>
 </dependency>
 ```
