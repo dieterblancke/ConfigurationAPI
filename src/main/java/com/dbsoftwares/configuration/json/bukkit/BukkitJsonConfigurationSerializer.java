@@ -9,6 +9,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BukkitJsonConfigurationSerializer implements JsonSerializer<ConfigurationSerializable> {
@@ -21,7 +22,7 @@ public class BukkitJsonConfigurationSerializer implements JsonSerializer<Configu
     }
 
     private Map<String, Object> createSerializedObjectMap(final ConfigurationSerializable serializable) {
-        final Map<String, Object> map = Maps.newLinkedHashMap();
+        final Map<String, Object> map = new LinkedHashMap<>();
 
         map.put("==", ConfigurationSerialization.getAlias(serializable.getClass()));
 

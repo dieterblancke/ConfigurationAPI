@@ -2,12 +2,12 @@ package com.dbsoftwares.configuration.yaml;
 
 import com.dbsoftwares.configuration.api.Utils;
 import com.dbsoftwares.configuration.serialization.ConfigurationSerialization;
-import com.google.common.collect.Maps;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.Tag;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class YamlConstructor extends SafeConstructor {
@@ -30,7 +30,7 @@ public class YamlConstructor extends SafeConstructor {
                 Map<?, ?> raw = (Map) super.construct(node);
 
                 if (raw.containsKey("==")) {
-                    Map<String, Object> result = Maps.newLinkedHashMapWithExpectedSize(raw.size());
+                    Map<String, Object> result = new LinkedHashMap<>(raw.size());
                     raw.forEach((key, value) -> result.put(key.toString(), value));
 
                     if (Utils.isBukkit()) {
