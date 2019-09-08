@@ -35,7 +35,6 @@ public class JsonConfiguration extends JsonSection implements IConfiguration {
                     reader, new TypeToken<HashMap<String, Object>>() {
                     }.getType()
             );
-
             if (values == null) {
                 values = new LinkedHashMap<>();
             }

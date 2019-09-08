@@ -33,7 +33,7 @@ public class YamlSection implements ISection {
             final Object value = entry.getValue();
 
             if (value instanceof Map) {
-                loadIntoSections((LinkedHashMap<String, Object>) value, section.createSection(key));
+                loadIntoSections((Map<String, Object>) value, section.createSection(key));
             } else if (value instanceof List) {
                 final List list = (List) value;
                 final List<ISection> sections = new ArrayList<>();
