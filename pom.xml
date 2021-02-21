@@ -11,8 +11,8 @@
 
     <distributionManagement>
         <repository>
-            <id>dbsoftwares</id>
-            <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
+            <id>minerift</id>
+            <url>https://repo.minerift.net/public-release/</url>
         </repository>
     </distributionManagement>
 
