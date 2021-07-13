@@ -14,9 +14,8 @@ ConfigurationAPI
 ### Repository
 ```xml
 <repository>
-    <id>dbsoftwares-repo</id>
-    <name>DBSoftwares Repository</name>
-    <url>http://nexus.diviwork.nl/repository/dbsoftwares/</url>
+  <id>dieterblancke</id>
+    <url>https://repo.dieterblancke.xyz/artifactory/dieterblancke-public/</url>
 </repository>
 ```
 
