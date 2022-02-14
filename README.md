@@ -176,102 +176,113 @@ ServerInfo info = configuration.get("info");
 ```
 
 #### ServerInfo.class:
+
 ```java
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Objects;
 
-import com.dbsoftwares.configuration.serialization.ConfigurationSerializable;
-import com.dbsoftwares.configuration.serialization.SerializableAs;
+import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
+import be.dieterblancke.configuration.serialization.SerializableAs;
 
-@SerializableAs("ServerInfo")
-public class ServerInfo implements ConfigurationSerializable {
+@SerializableAs( "ServerInfo" )
+public class ServerInfo implements ConfigurationSerializable
+{
 
-    private String name;
-    private String ip;
-    private int count;
-    private int max;
-    private PingData lastPing;
+  private String name;
+  private String ip;
+  private int count;
+  private int max;
+  private PingData lastPing;
 
-    public ServerInfo(String name, String ip, int count, int max) {
-        this.name = name;
-        this.ip = ip;
-        this.count = count;
-        this.max = max;
+  public ServerInfo( String name, String ip, int count, int max )
+  {
+    this.name = name;
+    this.ip = ip;
+    this.count = count;
+    this.max = max;
+  }
+
+  public static ServerInfo deserialize( Map<String, Object> map )
+  {
+    String name = (String) map.get( "name" );
+    String ip = (String) map.get( "ip" );
+    int count = ( (Number) map.get( "count" ) ).intValue();
+    int max = ( (Number) map.get( "max" ) ).intValue();
+
+    ServerInfo info = new ServerInfo( name, ip, count, max );
+
+    if ( map.containsKey( "lastPing" ) )
+    {
+      PingData ping = (PingData) map.get( "lastPing" );
+      info.setLastPing( ping );
     }
 
-    public static ServerInfo deserialize(Map<String, Object> map) {
-        String name = (String) map.get("name");
-        String ip = (String) map.get("ip");
-        int count = ((Number) map.get("count")).intValue();
-        int max = ((Number) map.get("max")).intValue();
+    return info;
+  }
 
-        ServerInfo info = new ServerInfo(name, ip, count, max);
+  public void ping()
+  {
+    // TODO: create ping request
+  }
 
-        if (map.containsKey("lastPing")) {
-            PingData ping = (PingData) map.get("lastPing");
-            info.setLastPing(ping);
-        }
+  public void setLastPing( PingData lastPing )
+  {
+    this.lastPing = lastPing;
+  }
 
-        return info;
-    }
+  public Map<String, Object> serialize()
+  {
+    Map<String, Object> result = new HashMap<>();
 
-    public void ping() {
-        // TODO: create ping request
-    }
+    result.put( "name", name );
+    result.put( "ip", ip );
+    result.put( "count", count );
+    result.put( "max", max );
+    result.put( "lastPing", lastPing );
 
-    public void setLastPing(PingData lastPing) {
-        this.lastPing = lastPing;
-    }
-
-    public Map<String, Object> serialize() {
-        Map<String, Object> result = new HashMap<>();
-
-        result.put("name", name);
-        result.put("ip", ip);
-        result.put("count", count);
-        result.put("max", max);
-        result.put("lastPing", lastPing);
-
-        return result;
-    }
+    return result;
+  }
 }
 ```
 
 #### PingData.class
+
 ```java
-import com.dbsoftwares.configuration.serialization.ConfigurationSerializable;
-import com.dbsoftwares.configuration.serialization.SerializableAs;
+import ConfigurationSerializable;
+import SerializableAs;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-@SerializableAs("PingData")
-public class PingData implements ConfigurationSerializable {
+@SerializableAs( "PingData" )
+public class PingData implements ConfigurationSerializable
+{
 
-    private boolean online;
-    private String motd;
+  private boolean online;
+  private String motd;
 
-    public PingData(boolean online, String motd) {
-        this.online = online;
-        this.motd = motd;
-    }
+  public PingData( boolean online, String motd )
+  {
+    this.online = online;
+    this.motd = motd;
+  }
 
-    public Map<String, Object> serialize() {
-        Map<String, Object> result = new HashMap<>();
+  public Map<String, Object> serialize()
+  {
+    Map<String, Object> result = new HashMap<>();
 
-        result.put("online", online);
-        result.put("motd", motd);
+    result.put( "online", online );
+    result.put( "motd", motd );
 
-        return result;
-    }
+    return result;
+  }
 
-    public static PingData deserialize(Map<String, Object> map) {
-        boolean online = (Boolean) map.get("online");
-        String motd = (String) map.get("motd");
+  public static PingData deserialize( Map<String, Object> map )
+  {
+    boolean online = (Boolean) map.get( "online" );
+    String motd = (String) map.get( "motd" );
 
-        return new PingData(online, motd);
-    }
+    return new PingData( online, motd );
+  }
 }
 ```
