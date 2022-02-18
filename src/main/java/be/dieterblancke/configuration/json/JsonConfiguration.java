@@ -32,6 +32,11 @@ public class JsonConfiguration extends JsonSection implements IConfiguration
         this.file = file;
     }
 
+    public JsonConfiguration( final InputStream inputStream ) throws IOException
+    {
+        this( inputStream, new JsonConfigurationOptions() );
+    }
+
     public JsonConfiguration( final InputStream input, final ConfigurationOptions configurationOptions ) throws IOException
     {
         this.options = (JsonConfigurationOptions) configurationOptions;

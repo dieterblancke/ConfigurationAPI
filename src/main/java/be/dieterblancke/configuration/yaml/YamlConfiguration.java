@@ -44,6 +44,11 @@ public class YamlConfiguration extends YamlSection implements IConfiguration
         this.file = file;
     }
 
+    public YamlConfiguration( final InputStream inputStream ) throws IOException
+    {
+        this( inputStream, YamlConfigurationOptions.builder().build() );
+    }
+
     public YamlConfiguration( final InputStream input, final ConfigurationOptions options ) throws IOException
     {
         this.options = (YamlConfigurationOptions) options;
