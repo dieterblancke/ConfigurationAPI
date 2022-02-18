@@ -1,11 +1,10 @@
 package be.dieterblancke.configuration.json;
 
 import be.dieterblancke.configuration.api.ConfigurationOptions;
-import be.dieterblancke.configuration.json.bukkit.BukkitJsonConfigurationDeserializer;
-import be.dieterblancke.configuration.json.bukkit.BukkitJsonConfigurationSerializer;
-import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
 import be.dieterblancke.configuration.api.IConfiguration;
 import be.dieterblancke.configuration.api.Utils;
+import be.dieterblancke.configuration.json.bukkit.BukkitJsonConfigurationSerializer;
+import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -18,9 +17,9 @@ import java.util.Map;
 public class JsonConfiguration extends JsonSection implements IConfiguration
 {
 
-    private File file;
     private final Gson gson = createGson();
     private final JsonConfigurationOptions options;
+    private File file;
 
     public JsonConfiguration( File file ) throws IOException
     {
@@ -65,15 +64,13 @@ public class JsonConfiguration extends JsonSection implements IConfiguration
                 .disableHtmlEscaping()
                 .setExclusionStrategies( new JsonExclusionStrategy() ) // usually fields of superclasses are not what we want
                 .registerTypeHierarchyAdapter( JsonSection.class, new JsonSectionSerializer() )
-                .registerTypeHierarchyAdapter( ConfigurationSerializable.class, new JsonConfigurationSerializer() )
-                .registerTypeHierarchyAdapter( ConfigurationSerializable.class, new JsonConfigurationDeserializer() );
+                .registerTypeHierarchyAdapter( ConfigurationSerializable.class, new JsonConfigurationSerializer() );
 
         if ( Utils.isBukkit() )
         {
-            Class<?> configurationSerializable = Utils.getClass( "org.bukkit.configuration.serialization.ConfigurationSerializable" );
+            final Class<?> configurationSerializable = Utils.getClass( "org.bukkit.configuration.serialization.ConfigurationSerializable" );
 
-            builder.registerTypeHierarchyAdapter( configurationSerializable, new BukkitJsonConfigurationSerializer() )
-                    .registerTypeHierarchyAdapter( configurationSerializable, new BukkitJsonConfigurationDeserializer() );
+            builder.registerTypeHierarchyAdapter( configurationSerializable, new BukkitJsonConfigurationSerializer() );
         }
 
         return builder.create();

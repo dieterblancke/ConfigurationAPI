@@ -890,6 +890,7 @@ public class YamlSection implements ISection
         {
             return this;
         }
+
         return this.get( path, new YamlSection( new LinkedHashMap<>() ) );
     }
 

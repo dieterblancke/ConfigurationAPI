@@ -1,9 +1,10 @@
 package be.dieterblancke.configuration.json;
 
-import be.dieterblancke.configuration.api.ISpigotSection;
-import be.dieterblancke.configuration.yaml.bukkit.SpigotSection;
 import be.dieterblancke.configuration.api.ISection;
+import be.dieterblancke.configuration.api.ISpigotSection;
 import be.dieterblancke.configuration.api.Utils;
+import be.dieterblancke.configuration.serialization.ConfigurationSerialization;
+import be.dieterblancke.configuration.yaml.bukkit.SpigotSection;
 import com.google.common.collect.Sets;
 
 import java.math.BigDecimal;
@@ -41,7 +42,37 @@ public class JsonSection implements ISection
 
             if ( value instanceof Map )
             {
-                loadIntoSections( (Map<String, Object>) value, section.createSection( key ) );
+                final Map map = (Map<String, Object>) value;
+
+                if ( map.containsKey( "==" ) )
+                {
+                    try
+                    {
+                        section.set( key, ConfigurationSerialization.deserializeObject( map ) );
+                    }
+                    catch ( Exception e )
+                    {
+                        if ( Utils.isBukkit() )
+                        {
+                            try
+                            {
+                                section.set( key, org.bukkit.configuration.serialization.ConfigurationSerialization.deserializeObject( map ) );
+                            }
+                            catch ( Exception e1 )
+                            {
+                                loadIntoSections( map, section.createSection( key ) );
+                            }
+                        }
+                        else
+                        {
+                            loadIntoSections( map, section.createSection( key ) );
+                        }
+                    }
+                }
+                else
+                {
+                    loadIntoSections( map, section.createSection( key ) );
+                }
             }
             else if ( value instanceof List )
             {
@@ -112,6 +143,7 @@ public class JsonSection implements ISection
     public <T> T get( String path, T def )
     {
         ISection section = getSectionFor( path );
+
         Object value;
         if ( section == this )
         {
