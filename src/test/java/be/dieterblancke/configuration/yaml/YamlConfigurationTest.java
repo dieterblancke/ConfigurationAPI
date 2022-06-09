@@ -118,25 +118,15 @@ public class YamlConfigurationTest extends ConfigurationTest
                 "This is a test block comment\nwith two lines!",
                 configuration.getComment( "hello", CommentType.BLOCK )
         );
-        assertEquals(
-                "with inline comment too!",
-                configuration.getComment( "test", CommentType.SIDE )
-        );
 
         configuration.set( "another", "test" );
         configuration.setComment( "another", "test block comment 1\nwith two lines!", CommentType.BLOCK );
 
-        configuration.set( "lorem", "test" );
-        configuration.setComment( "lorem", "test inline comment 1", CommentType.SIDE );
-
-        final String str = configuration.saveToString();
         assertEquals( "# This is a test block comment\n" +
                 "# with two lines!\n" +
                 "hello: world\n" +
-                "test: testing # with inline comment too!\n" +
                 "# test block comment 1\n" +
                 "# with two lines!\n" +
-                "another: test\n" +
-                "lorem: test # test inline comment 1\n", configuration.saveToString() );
+                "another: test\n", configuration.saveToString() );
     }
 }

@@ -41,7 +41,6 @@ public class YamlCommentDumper extends YamlCommentReader
                 final KeyTree.Node node = this.getNode( path );
                 this.append( node, KeyTree.Node::getComment );
                 this.builder.append( this.currentLine );
-                this.append( node, KeyTree.Node::getSideComment );
                 this.builder.append( '\n' );
             }
         }
