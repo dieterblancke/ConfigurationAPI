@@ -173,7 +173,9 @@ public class YamlConfiguration extends YamlSection implements IConfiguration
     @SneakyThrows
     private String dumpWithComments()
     {
-        return new YamlCommentDumper( this.parseComments(), new StringReader( this.dumpWithoutComments() ) ).dump();
+        String yamlWithoutComments = this.dumpWithoutComments();
+
+        return new YamlCommentDumper( this.parseComments( yamlWithoutComments ), new StringReader( yamlWithoutComments ) ).dump();
     }
 
     private String dumpWithoutComments()
@@ -202,15 +204,6 @@ public class YamlConfiguration extends YamlSection implements IConfiguration
     public String getComment( final String path, final CommentType type )
     {
         return this.options.isUseComments() && this.yamlCommentMapper != null ? this.yamlCommentMapper.getComment( path, type ) : null;
-    }
-
-    private YamlCommentMapper parseComments()
-    {
-        if ( this.yamlCommentMapper != null )
-        {
-            return this.yamlCommentMapper;
-        }
-        return parseComments( fileToString() );
     }
 
     @SneakyThrows
