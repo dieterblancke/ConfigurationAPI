@@ -204,6 +204,7 @@ public class YamlConfiguration extends YamlSection implements IConfiguration
         return this.options.isUseComments() && this.yamlCommentMapper != null ? this.yamlCommentMapper.getComment( path, type ) : null;
     }
 
+
     private YamlCommentMapper parseComments()
     {
         if ( this.yamlCommentMapper != null )

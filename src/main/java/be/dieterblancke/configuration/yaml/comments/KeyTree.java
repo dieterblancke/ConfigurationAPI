@@ -89,17 +89,10 @@ public class KeyTree
     {
 
         private final String name;
-
         private final Node parent;
-
         private final LinkedList<Node> children = new LinkedList<>();
-
         private final int indent;
-
         private String comment;
-
-        private String sideComment;
-
         private String path;
 
         Node( final Node parent, final int indent, final String name )
@@ -122,16 +115,6 @@ public class KeyTree
         public void setComment( final String comment )
         {
             this.comment = comment;
-        }
-
-        public String getSideComment()
-        {
-            return this.sideComment;
-        }
-
-        public void setSideComment( final String sideComment )
-        {
-            this.sideComment = sideComment;
         }
 
         public int getIndentation()
@@ -165,7 +148,6 @@ public class KeyTree
                     "indent=" + this.indent +
                     ", name='" + this.name + '\'' +
                     ", comment='" + this.comment + '\'' +
-                    ", side='" + this.sideComment + '\'' +
                     ", children=" + this.children +
                     '}';
         }

@@ -24,7 +24,7 @@ ConfigurationAPI
 <dependency>
     <groupId>com.dbsoftwares.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>1.3.1</version>
+    <version>2.0.2</version>
     <scope>compile</scope>
 </dependency>
 ```

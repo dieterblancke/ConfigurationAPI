@@ -36,10 +36,6 @@ public class YamlCommentMapper implements Commentable
             {
                 node.setComment( this.indent( comment, node.getIndentation() ) );
             }
-            else
-            {
-                node.setSideComment( " " + comment );
-            }
         }
     }
 
@@ -51,7 +47,7 @@ public class YamlCommentMapper implements Commentable
         {
             return null;
         }
-        String comment = type == CommentType.BLOCK ? node.getComment() : node.getSideComment();
+        String comment = type == CommentType.BLOCK ? node.getComment() : "";
         if ( comment != null )
         {
             comment = comment.replaceAll( "[ \\t]*#+[ \\t]*", "" ).trim();
@@ -69,10 +65,6 @@ public class YamlCommentMapper implements Commentable
         if ( type == CommentType.BLOCK )
         {
             node.setComment( comment );
-        }
-        else
-        {
-            node.setSideComment( comment );
         }
     }
 

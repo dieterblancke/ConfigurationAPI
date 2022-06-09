@@ -9,7 +9,7 @@ public interface Commentable {
      *
      * @param path    path of desired section or value
      * @param comment the comment to add, # symbol is not needed
-     * @param type    either above (block) or side
+     * @param type    the comment type
      */
     void setComment(String path, String comment, CommentType type);
 
@@ -29,7 +29,7 @@ public interface Commentable {
      * Retrieve the comment of the section or value selected by path.
      *
      * @param path path of desired section or value
-     * @param type either above (block) or side
+     * @param type the comment type
      * @return the comment of the section or value selected by path,
      * or null if that path does not have any comment of this type
      */
