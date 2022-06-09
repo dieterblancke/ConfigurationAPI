@@ -1,7 +1,10 @@
 package be.dieterblancke.configuration.api;
 
+import be.dieterblancke.configuration.json.JsonConfiguration;
 import be.dieterblancke.configuration.json.JsonConfigurationOptions;
+import be.dieterblancke.configuration.yaml.YamlConfiguration;
 import be.dieterblancke.configuration.yaml.YamlConfigurationOptions;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +23,7 @@ public interface IConfiguration extends ISection
      * @param targetFile The file to be created.
      * @return The created file.
      */
-    static File createDefaultFile( InputStream input, File targetFile )
+    static File createDefaultFile( final InputStream input, final File targetFile )
     {
         if ( targetFile.exists() )
         {
@@ -55,9 +58,10 @@ public interface IConfiguration extends ISection
      * @param file The file that has to be read.
      * @return A new IConfiguration instance for the given file.
      */
-    static <T extends IConfiguration> T loadJsonConfiguration( File file )
+    @SneakyThrows
+    static JsonConfiguration loadJsonConfiguration( final File file )
     {
-        return loadConfiguration( FileStorageType.JSON, file );
+        return new JsonConfiguration( file );
     }
 
     /**
@@ -66,9 +70,10 @@ public interface IConfiguration extends ISection
      * @param input The stream that has to be read.
      * @return A new IConfiguration instance for the given stream.
      */
-    static <T extends IConfiguration> T loadJsonConfiguration( InputStream input )
+    @SneakyThrows
+    static JsonConfiguration loadJsonConfiguration( final InputStream input )
     {
-        return loadConfiguration( FileStorageType.JSON, input );
+        return new JsonConfiguration( input );
     }
 
     /**
@@ -78,9 +83,11 @@ public interface IConfiguration extends ISection
      * @param configurationOptions The options to be used to load the configuration.
      * @return A new IConfiguration instance for the given file.
      */
-    static <T extends IConfiguration> T loadJsonConfiguration( File file, JsonConfigurationOptions configurationOptions )
+    @SneakyThrows
+    static JsonConfiguration loadJsonConfiguration( final File file,
+                                                    final JsonConfigurationOptions configurationOptions )
     {
-        return loadConfiguration( FileStorageType.JSON, file, configurationOptions );
+        return new JsonConfiguration( file, configurationOptions );
     }
 
     /**
@@ -90,9 +97,11 @@ public interface IConfiguration extends ISection
      * @param configurationOptions The options to be used to load the configuration.
      * @return A new IConfiguration instance for the given stream.
      */
-    static <T extends IConfiguration> T loadJsonConfiguration( InputStream input, JsonConfigurationOptions configurationOptions )
+    @SneakyThrows
+    static JsonConfiguration loadJsonConfiguration( final InputStream input,
+                                                    final JsonConfigurationOptions configurationOptions )
     {
-        return loadConfiguration( FileStorageType.JSON, input, configurationOptions );
+        return new JsonConfiguration( input, configurationOptions );
     }
 
     /**
@@ -101,9 +110,10 @@ public interface IConfiguration extends ISection
      * @param file The file that has to be read.
      * @return A new IConfiguration instance for the given file.
      */
-    static <T extends IConfiguration> T loadYamlConfiguration( File file )
+    @SneakyThrows
+    static YamlConfiguration loadYamlConfiguration( final File file )
     {
-        return loadConfiguration( FileStorageType.YAML, file );
+        return new YamlConfiguration( file );
     }
 
     /**
@@ -112,9 +122,10 @@ public interface IConfiguration extends ISection
      * @param input The stream that has to be read.
      * @return A new IConfiguration instance for the given stream.
      */
-    static <T extends IConfiguration> T loadYamlConfiguration( InputStream input )
+    @SneakyThrows
+    static YamlConfiguration loadYamlConfiguration( final InputStream input )
     {
-        return loadConfiguration( FileStorageType.YAML, input );
+        return new YamlConfiguration( input );
     }
 
     /**
@@ -124,9 +135,11 @@ public interface IConfiguration extends ISection
      * @param configurationOptions The options to be used to load the configuration.
      * @return A new IConfiguration instance for the given file.
      */
-    static <T extends IConfiguration> T loadYamlConfiguration( File file, YamlConfigurationOptions configurationOptions )
+    @SneakyThrows
+    static YamlConfiguration loadYamlConfiguration( final File file,
+                                                    final YamlConfigurationOptions configurationOptions )
     {
-        return loadConfiguration( FileStorageType.YAML, file, configurationOptions );
+        return new YamlConfiguration( file, configurationOptions );
     }
 
     /**
@@ -136,9 +149,11 @@ public interface IConfiguration extends ISection
      * @param configurationOptions The options to be used to load the configuration.
      * @return A new IConfiguration instance for the given stream.
      */
-    static <T extends IConfiguration> T loadYamlConfiguration( InputStream input, YamlConfigurationOptions configurationOptions )
+    @SneakyThrows
+    static YamlConfiguration loadYamlConfiguration( final InputStream input,
+                                                    final YamlConfigurationOptions configurationOptions )
     {
-        return loadConfiguration( FileStorageType.YAML, input, configurationOptions );
+        return new YamlConfiguration( input, configurationOptions );
     }
 
     /**
