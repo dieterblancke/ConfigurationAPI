@@ -14,7 +14,7 @@ ConfigurationAPI
 ### Repository
 ```xml
 <repository>
-  <id>dieterblancke</id>
+    <id>dieterblancke</id>
     <url>https://repo.dieterblancke.xyz/artifactory/dieterblancke-public/</url>
 </repository>
 ```
