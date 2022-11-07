@@ -22,9 +22,9 @@ ConfigurationAPI
 ### Dependency
 ```xml
 <dependency>
-    <groupId>com.dbsoftwares.configuration</groupId>
+    <groupId>be.dieterblancke.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@ This is to compile the code into your jar, also the classes are being relocated 
             <configuration>
                 <relocations>
                     <relocation>
-                        <pattern>com.dbsoftwares.configuration</pattern>
+                        <pattern>be.dieterblancke.configuration</pattern>
                         <!-- Replace the package below with your package -->
                         <shadedPattern>example.package.configuration</shadedPattern>
                     </relocation>
