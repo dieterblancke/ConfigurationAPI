@@ -2,6 +2,7 @@ package be.dieterblancke.configuration.yaml;
 
 import be.dieterblancke.configuration.serialization.ConfigurationSerialization;
 import be.dieterblancke.configuration.api.Utils;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
@@ -15,6 +16,7 @@ public class YamlConstructor extends SafeConstructor
 
     public YamlConstructor()
     {
+        super(new LoaderOptions());
         this.yamlConstructors.put( Tag.MAP, new CustomObjectConstructor() );
     }
 

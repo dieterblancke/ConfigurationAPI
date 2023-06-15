@@ -3,6 +3,7 @@ package be.dieterblancke.configuration.yaml;
 import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
 import be.dieterblancke.configuration.serialization.ConfigurationSerialization;
 import be.dieterblancke.configuration.api.Utils;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Representer;
 
@@ -14,6 +15,7 @@ public class YamlRepresenter extends Representer
 
     public YamlRepresenter()
     {
+        super(new DumperOptions());
         this.multiRepresenters.put( YamlSection.class, new RepresentMap()
         {
             @Override
