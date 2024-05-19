@@ -24,7 +24,7 @@ ConfigurationAPI
 <dependency>
     <groupId>be.dieterblancke.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>2.0.3</version>
+    <version>3.0.0</version>
     <scope>compile</scope>
 </dependency>
 ```
