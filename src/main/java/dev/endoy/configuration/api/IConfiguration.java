@@ -254,9 +254,9 @@ public interface IConfiguration extends ISection
         {
             default:
             case JSON:
-                return Utils.getClass( "be.dieterblancke.configuration.json.JsonConfiguration" );
+                return Utils.getClass( "dev.endoy.configuration.json.JsonConfiguration" );
             case YAML:
-                return Utils.getClass( "be.dieterblancke.configuration.yaml.YamlConfiguration" );
+                return Utils.getClass( "dev.endoy.configuration.yaml.YamlConfiguration" );
         }
     }
 

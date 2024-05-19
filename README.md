@@ -22,9 +22,9 @@ ConfigurationAPI
 ### Dependency
 ```xml
 <dependency>
-    <groupId>be.dieterblancke.configuration</groupId>
+    <groupId>dev.endoy.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.1</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@ This is to compile the code into your jar, also the classes are being relocated 
             <configuration>
                 <relocations>
                     <relocation>
-                        <pattern>be.dieterblancke.configuration</pattern>
+                        <pattern>dev.endoy.configuration</pattern>
                         <!-- Replace the package below with your package -->
                         <shadedPattern>example.package.configuration</shadedPattern>
                     </relocation>
