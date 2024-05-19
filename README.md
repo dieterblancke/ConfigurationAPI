@@ -181,8 +181,8 @@ ServerInfo info = configuration.get("info");
 import java.util.Map;
 import java.util.HashMap;
 
-import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
-import be.dieterblancke.configuration.serialization.SerializableAs;
+import serialization.dev.endoy.configuration.ConfigurationSerializable;
+import serialization.dev.endoy.configuration.SerializableAs;
 
 @SerializableAs( "ServerInfo" )
 public class ServerInfo implements ConfigurationSerializable

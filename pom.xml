@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>be.dieterblancke.configuration</groupId>
+    <groupId>dev.endoy.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
 
     <distributionManagement>
         <repository>
-            <id>dieterblancke</id>
-            <url>https://repo.dieterblancke.xyz/artifactory/dieterblancke-public/</url>
+            <id>endoy</id>
+            <url>https://repo.endoy.dev/artifactory/dieterblancke-public/</url>
         </repository>
     </distributionManagement>
 
