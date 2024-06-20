@@ -22,9 +22,9 @@ ConfigurationAPI
 ### Dependency
 ```xml
 <dependency>
-    <groupId>be.dieterblancke.configuration</groupId>
+    <groupId>dev.endoy.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>2.0.3</version>
+    <version>4.0.1</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@ This is to compile the code into your jar, also the classes are being relocated 
             <configuration>
                 <relocations>
                     <relocation>
-                        <pattern>be.dieterblancke.configuration</pattern>
+                        <pattern>dev.endoy.configuration</pattern>
                         <!-- Replace the package below with your package -->
                         <shadedPattern>example.package.configuration</shadedPattern>
                     </relocation>
@@ -181,8 +181,8 @@ ServerInfo info = configuration.get("info");
 import java.util.Map;
 import java.util.HashMap;
 
-import be.dieterblancke.configuration.serialization.ConfigurationSerializable;
-import be.dieterblancke.configuration.serialization.SerializableAs;
+import serialization.dev.endoy.configuration.ConfigurationSerializable;
+import serialization.dev.endoy.configuration.SerializableAs;
 
 @SerializableAs( "ServerInfo" )
 public class ServerInfo implements ConfigurationSerializable
