@@ -24,7 +24,7 @@ ConfigurationAPI
 <dependency>
     <groupId>dev.endoy.configuration</groupId>
     <artifactId>ConfigurationAPI</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2</version>
     <scope>compile</scope>
 </dependency>
 ```
