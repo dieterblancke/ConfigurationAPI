@@ -12,7 +12,7 @@
     <distributionManagement>
         <repository>
             <id>endoy</id>
-            <url>https://repo.endoy.dev/artifactory/dieterblancke-public/</url>
+            <url>https://repo.endoy.dev/endoy-public</url>
         </repository>
     </distributionManagement>
 

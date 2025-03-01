@@ -15,7 +15,7 @@ ConfigurationAPI
 ```xml
 <repository>
     <id>dieterblancke</id>
-    <url>https://repo.dieterblancke.xyz/artifactory/dieterblancke-public/</url>
+    <url>https://repo.endoy.dev/endoy-public</url>
 </repository>
 ```
 
